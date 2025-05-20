@@ -2,7 +2,6 @@ import { Link } from "react-router-dom"
 import { Button } from "../components/ui/button"
 import { Input } from "../components/ui/input"
 import { Search } from "lucide-react"
-//import illustrationImage from "../assets/illustrateimage.jpg"
 import illustrationImage from "../assets/illustrationImage.png"
 
 function HomePage() {
@@ -60,7 +59,7 @@ function HomePage() {
             <div className="relative w-full max-w-md">
               <Input
                 type="text"
-                placeholder="Search thesis books..."
+                placeholder="Search for your favorite article..."
                 className="pl-4 pr-10 py-2 border-gray-300 rounded-md"
               />
               <Button
