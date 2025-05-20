@@ -4,6 +4,7 @@ import LoginPage from "./pages/Login"
 import RegisterPage from './pages/Register'
 import HomePage from './pages/HomePage'
 import Dashboard from './pages/Dashboard'
+import { ToastContainer } from 'react-toastify'
 import './App.css'
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           /> */}
         </Routes>
       </BrowserRouter>
+      <ToastContainer/>
     </>
   )
 }
