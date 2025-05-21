@@ -17,8 +17,8 @@ const check = ()=>{
   const login = async (token, user) => {
     localStorage.setItem("articleLms_token", token)
     localStorage.setItem("articleLms_user", JSON.stringify(user))
-    setToken('token')
-    setUser('user')
+    setToken(token)
+    setUser(user)
     
   };
 
@@ -28,8 +28,12 @@ const check = ()=>{
      window.location.href = "/";
   };
 
+  const getUser  = ()=>{
+    return user
+  }
+
   return (
-    <AuthContext.Provider value={{ check, settingUser, login, logout }}>
+    <AuthContext.Provider value={{ check, settingUser, login, logout,getUser }}>
       {children}
     </AuthContext.Provider>
   );

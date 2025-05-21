@@ -10,7 +10,6 @@ import {  Loader2 } from "lucide-react"
 import { showSuccess, showError } from "@/utils/toast"
 import { useAuth } from "@/context/AuthContext"
 
-
 const LoginPage = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")

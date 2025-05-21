@@ -1,36 +1,37 @@
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs"
 import { Card, CardDescription, CardTitle } from "./ui/card"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-
+import illustrationImage from "../assets/illustrationImage.png"
+import illustrateimage from "../assets/illustrateimage.jpg"
 function ArticlesList() {
   const articles = [
     {
       id: 1,
       title: "A Smarter You Is Only 5 Minutes Away",
-      excerpt:
+      content:
         "Intelligence is a work in progress. Everything a smart person knows, they learned from somewhere at one point or another. Getting smarter doesn't necessarily mean a huge commitment of time and energy...",
-      image: "/placeholder.svg?height=100&width=150",
+      image: illustrationImage,
     },
     {
       id: 2,
       title: "Everyone is a designer. Get over it.",
-      excerpt:
+      content:
         "Recently, Jared Spool caught my attention with an article about how Netflix's performance engineers are actually designers. It's a provocative idea, but it makes sense. His argument is that everyone in your...",
-      image: "/placeholder.svg?height=100&width=150",
+      image: illustrateimage,
     },
     {
       id: 3,
       title: "The 7 Questions You'll Be Asked at a UX Design Interview",
-      excerpt:
+      content:
         "Recently, Jared Spool caught my attention with an article about how Netflix's performance engineers are actually designers. It's a provocative idea, but it makes sense. His argument is that everyone in your...",
-      image: "/placeholder.svg?height=100&width=150",
+      image: illustrationImage,
     },
     {
       id: 4,
       title: "Making Learning Easy by Design",
-      excerpt:
+      content:
         "How can design make the process of a choice? It's not as easy as it sounds. First out, people usually won't go out of their way to learn something new. Research shows that only 3% of adults in the U.S...",
-      image: "/placeholder.svg?height=100&width=150",
+      image: illustrateimage,
     },
   ]
 
@@ -74,7 +75,7 @@ function ArticlesList() {
               </div>
               <div className="p-4">
                 <CardTitle className="text-lg mb-2">{article.title}</CardTitle>
-                <CardDescription className="text-sm">{article.excerpt}</CardDescription>
+                <CardDescription className="text-sm">{article.content}</CardDescription>
               </div>
             </div>
           </Card>

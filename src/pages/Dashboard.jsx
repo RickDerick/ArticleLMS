@@ -8,7 +8,7 @@ import ArticlesList from "../components/ArticlesList"
 import ContactsList from "../components/ContactsList"
 import ProfileSettings from "../components/ProfileSetting"
 import { useAuth } from "@/context/AuthContext"
-function Dashboard({ onLogout }) {
+function Dashboard() {
   const {logout} = useAuth()
   const [sidebarOpen, setSidebarOpen] = useState(true)
 

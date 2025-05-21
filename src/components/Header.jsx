@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Menu, Search, Bell } from "lucide-react"
+import { useAuth } from "@/context/AuthContext"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,9 +16,9 @@ import { Input } from "./ui/input"
 import { Button } from "./ui/button"
 
 function Header({ onMenuClick, onLogout }) {
+  const { getUser} = useAuth()
   const [searchQuery, setSearchQuery] = useState("")
   const navigate = useNavigate()
-
   const handleProfileClick = () => {
     navigate("/dashboard/profile")
   }
@@ -52,7 +53,9 @@ function Header({ onMenuClick, onLogout }) {
             <Button variant="ghost" className="relative h-8 w-8 rounded-full">
               <Avatar className="h-8 w-8">
                 <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
-                <AvatarFallback>U</AvatarFallback>
+                <AvatarFallback>{getUser()?
+                  getUser()?.name.charAt(0).toUpperCase() : U
+                }</AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
