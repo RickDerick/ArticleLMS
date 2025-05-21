@@ -77,9 +77,10 @@ const RegisterPage = () => {
         `${import.meta.env.VITE_API_BASE_URL}/auth/verify-otp`,
         { email: formData.email, otp }
       )
-      showSuccess("Verification successful! Redirecting to login...")
+      console.log('Checking Response after verification', res.data);
+      showSuccess(res.data?.data?.message)
       setTimeout(() => {
-        window.location.href = "/login"
+        window.location.href = `/login?email=${formData.email}&verified=true`
       }, 2000)
     } catch (error) {
       showError(error.response?.data?.message || "OTP verification failed. Please try again.")

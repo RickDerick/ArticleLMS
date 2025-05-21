@@ -1,10 +1,15 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import axios from "axios"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
+import { useLocation, useNavigate } from "react-router-dom"
+import {  Loader2 } from "lucide-react"
+import { showSuccess, showError } from "@/utils/toast"
+import { useAuth } from "@/context/AuthContext"
+
 
 const LoginPage = () => {
   const [email, setEmail] = useState("")
@@ -12,7 +17,18 @@ const LoginPage = () => {
   const [rememberMe, setRememberMe] = useState(false)
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
+  const {check, settingUser, login, logout} = useAuth()
 
+  const location = useLocation()
+  const navigate = useNavigate()
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const emailFromQuery = params.get('email')
+    if(emailFromQuery){
+      setEmail(emailFromQuery)
+    }
+  }, [location.search])
+  
   const handleLogin = async (e) => {
     e.preventDefault()
     setError("")
@@ -21,21 +37,21 @@ const LoginPage = () => {
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/auth/login`,
-        { email, password, rememberMe }
+        { email, password }
       )
 
-      const { token, user } = res.data
+      const { token, user } = res.data.data
+      console.log("checkUser", user)
+      console.log("checkToken",token)
 
-      if (rememberMe) {
-        localStorage.setItem("authToken", token)
-      } else {
-        sessionStorage.setItem("authToken", token)
-      }
-
-      localStorage.setItem("user", JSON.stringify(user))
-      alert("Login successful!")
+      if (token && user ) {
+       settingUser(user)
+       login(token, user)
+      } 
+      showSuccess("res.data.data.message")
+      navigate("/dashboard")
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed. Please try again.")
+      showError(err.response?.data?.message || "Login failed. Please try again.")
     } finally {
       setLoading(false)
     }
@@ -96,7 +112,11 @@ const LoginPage = () => {
             className="w-full bg-purple-700 hover:bg-purple-800"
             disabled={loading}
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin"/>
+            ):(
+              "Login"
+            )}
           </Button>
         </form>
       </Card>

@@ -1,93 +1,38 @@
-import { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
-
-export const AuthContext = createContext();
+import { createContext, useState, useEffect, useContext } from 'react';
+const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(localStorage.getItem('user'))
+  const [token, setToken] = useState(localStorage.getItem('token'))
 
-  useEffect(() => {
-    // Check if user is logged in on mount
-    const token = localStorage.getItem('token');
-    if (token) {
-      axios
-        .get('http://localhost:8000/api/user', {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((response) => {
-          setUser(response.data);
-          setLoading(false);
-        })
-        .catch(() => {
-          localStorage.removeItem('token');
-          setLoading(false);
-        });
-    } else {
-      setLoading(false);
-    }
-  }, []);
-
-  const login = async (email, password) => {
-    try {
-      // Get CSRF cookie
-      await axios.get('http://localhost:8000/sanctum/csrf-cookie', {
-        withCredentials: true,
-      });
-      const response = await axios.post('http://localhost:8000/api/login', {
-        email,
-        password,
-      });
-      const { user, token } = response.data;
-      localStorage.setItem('token', token);
-      setUser(user);
-      return true;
-    } catch (error) {
-      console.error(error);
-      return false;
-    }
+const check = ()=>{
+    return !!token;
+  }
+  const settingUser = async (user) => {
+    localStorage.setItem("articleLms_user", JSON.stringify(user))
+    setUser('user')
+    
   };
 
-  const register = async (name, email, password, password_confirmation) => {
-    try {
-      await axios.get('http://localhost:8000/sanctum/csrf-cookie', {
-        withCredentials: true,
-      });
-      const response = await axios.post('http://localhost:8000/api/register', {
-        name,
-        email,
-        password
-      });
-      const { user, token } = response.data;
-      localStorage.setItem('token', token);
-      setUser(user);
-      return true;
-    } catch (error) {
-      console.error(error);
-      return false;
-    }
+  const login = async (token, user) => {
+    localStorage.setItem("articleLms_token", token)
+    localStorage.setItem("articleLms_user", JSON.stringify(user))
+    setToken('token')
+    setUser('user')
+    
   };
 
   const logout = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      await axios.post(
-        'http://localhost:8000/api/logout',
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      localStorage.removeItem('token');
-      setUser(null);
-    } catch (error) {
-      console.error(error);
-    }
+    localStorage.removeItem("articleLms_token");
+    localStorage.removeItem("articleLms_user");
+    location.reload();
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ check, settingUser, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
+
+export const useAuth = () => useContext(AuthContext);
