@@ -5,10 +5,12 @@ import RegisterPage from './pages/Register'
 import HomePage from './pages/HomePage'
 import Dashboard from './pages/Dashboard'
 import { ToastContainer } from 'react-toastify'
+import { useAuth } from "@/context/AuthContext"
 import './App.css'
 
 function App() {
-// const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem("isAuthenticated") === "true")
+  const {check, settingUser, login, logout} = useAuth()
+  const [isAuthenticated, setIsAuthenticated] = useState(check)
   return (
     <>
       <BrowserRouter>

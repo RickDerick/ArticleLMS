@@ -17,7 +17,7 @@ const LoginPage = () => {
   const [rememberMe, setRememberMe] = useState(false)
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
-  const {check, settingUser, login, logout} = useAuth()
+  const { settingUser, login} = useAuth()
 
   const location = useLocation()
   const navigate = useNavigate()
@@ -48,7 +48,7 @@ const LoginPage = () => {
        settingUser(user)
        login(token, user)
       } 
-      showSuccess("res.data.data.message")
+      showSuccess(res.data.data.message)
       navigate("/dashboard")
     } catch (err) {
       showError(err.response?.data?.message || "Login failed. Please try again.")

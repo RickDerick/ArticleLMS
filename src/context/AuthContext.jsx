@@ -25,7 +25,7 @@ const check = ()=>{
   const logout = async () => {
     localStorage.removeItem("articleLms_token");
     localStorage.removeItem("articleLms_user");
-    location.reload();
+     window.location.href = "/";
   };
 
   return (
