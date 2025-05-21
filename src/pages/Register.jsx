@@ -74,7 +74,7 @@ const RegisterPage = () => {
 
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/auth/verify`,
+        `${import.meta.env.VITE_API_BASE_URL}/auth/verify-otp`,
         { email: formData.email, otp }
       )
       showSuccess("Verification successful! Redirecting to login...")
