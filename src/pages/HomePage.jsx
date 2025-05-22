@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom"
-import { Button } from "../components/ui/button"
-import { Input } from "../components/ui/input"
-import { Search } from "lucide-react"
-import illustrationImage from "../assets/illustrationImage.png"
+import { Button } from "@/components/ui/button"
+import illustrationImage from "@/assets/illustrationImage.png"
+import HeroSection from "@/components/HeroSection"
+import FeaturesSection from "@/components/FeatureSection"
+import StatisticsSection from "@/components/StatisticsSection"
+import CallToAction from "@/components/CallToAction"
+import Footer from "@/components/Footer"
 
 function HomePage() {
   return (
@@ -53,45 +56,22 @@ function HomePage() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8">
-            <div className="relative w-full max-w-md">
-              <Input
-                type="text"
-                placeholder="Search for your favorite article..."
-                className="pl-4 pr-10 py-2 border-gray-300 rounded-md"
-              />
-              <Button
-                size="icon"
-                className="absolute right-0 top-0 h-full bg-blue-500 hover:bg-blue-600 rounded-l-none"
-              >
-                <Search className="h-4 w-4" />
-              </Button>
-            </div>
+      <main className="container mx-auto px-4">
+        {/* Hero Section */}
+        <HeroSection illustrationImage={illustrationImage} />
 
-            <div className="space-y-4">
-              <h1 className="text-4xl font-bold">
-                Article <span className="text-blue-500">Library Management</span> <br />
-                System
-              </h1>
-              <p className="text-gray-600 max-w-md">
-                The Article Library Management System is a user-friendly and interactive platform designed to help anyone—students, teachers, or any literate individual—efficiently manage, browse, and access articles or books. Originally developed for the Computer Studies Department, the system supports easy organization, retrieval, and tracking of reading materials, making knowledge readily accessible to a broad audience. Whether for academic purposes or personal learning, this system simplifies library interactions through a modern and intuitive interface.
-              </p>
-            </div>
-          </div>
+        {/* Features Section */}
+        <FeaturesSection />
 
-          <div className="flex justify-center md:justify-end">
-            <div className="relative w-full h-auto max-w-md md:max-w-lg">
-              <img
-                src={illustrationImage || "/placeholder.svg"}
-                alt="Thesis System Illustration"
-                className="object-contain w-full h-full"
-              />
-            </div>
-          </div>
-        </div>
+        {/* Statistics Section */}
+        <StatisticsSection />
+
+        {/* Call to Action */}
+        <CallToAction />
       </main>
+
+      {/* Footer */}
+      <Footer />
     </div>
   )
 }
