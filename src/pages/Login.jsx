@@ -40,15 +40,12 @@ const LoginPage = () => {
       )
 
       const { token, user } = res.data.data
-      console.log("checkUser", user)
-      console.log("checkToken",token)
-
       if (token && user ) {
        settingUser(user)
        login(token, user)
       } 
       showSuccess(res.data.data.message)
-      navigate("/dashboard")
+        navigate("/dashboard")
     } catch (err) {
       showError(err.response?.data?.message || "Login failed. Please try again.")
     } finally {
