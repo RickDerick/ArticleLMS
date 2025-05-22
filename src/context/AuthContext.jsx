@@ -32,8 +32,12 @@ const check = ()=>{
     return user
   }
 
+  const getToken =()=>{
+    return token
+  }
+
   return (
-    <AuthContext.Provider value={{ check, settingUser, login, logout,getUser }}>
+    <AuthContext.Provider value={{ check, settingUser, login, logout,getUser,getToken }}>
       {children}
     </AuthContext.Provider>
   );

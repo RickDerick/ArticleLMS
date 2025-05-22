@@ -7,8 +7,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, Save } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
+import { showSuccess, showError } from "@/utils/toast"
 
 const ArticleForm = () => {
+  const {getToken}= useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
   const isEditMode = !!id;
@@ -16,40 +19,52 @@ const ArticleForm = () => {
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    category: '',
+    category_id: '',
     image_url: ''
   });
   
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [categories, setCategories] = useState([
-    'All Articles', 'My Articles', 'Group Articles', 'Government Articles'
-  ]);
+  const [categories, setCategories] = useState([ ]);
 
   useEffect(() => {
+    fetchCategories();
     if (isEditMode) {
       fetchArticle();
     }
-    // You could also fetch categories from your API here
   }, [id]);
 
   const fetchArticle = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('auth_token');
-      const response = await axios.get(`http://your-laravel-api.com/api/articles/${id}`, {
+      const token = getToken();
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/article/articles/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
-      setFormData(response.data);
+      setFormData(response.data.data || []);
+      console.log('check',response.data.data  )
     } catch (error) {
-      setError('Failed to fetch article details');
+      showError('Failed to fetch article details');
       console.error(error);
+      setCategories([]);
     } finally {
       setLoading(false);
     }
   };
+
+  const fetchCategories = async () => {
+  try {
+    const token = getToken();
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/categories/categories-setup`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    setCategories(response.data.data);
+  } catch (err) {
+    console.error("Failed to fetch categories", err);
+  }
+};
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,7 +72,7 @@ const ArticleForm = () => {
   };
 
   const handleSelectChange = (value) => {
-    setFormData(prev => ({ ...prev, category: value }));
+    setFormData(prev => ({ ...prev, category_id: parseInt(value) }));
   };
 
   const handleSubmit = async (e) => {
@@ -66,21 +81,22 @@ const ArticleForm = () => {
     setError('');
 
     try {
-      const token = localStorage.getItem('auth_token');
+      const token = getToken();
       const headers = {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       };
 
       if (isEditMode) {
-        await axios.put(`http://your-laravel-api.com/api/articles/${id}`, formData, { headers });
+        await axios.put(`${import.meta.env.VITE_API_BASE_URL}/admin/articles/${id}`, formData, { headers });
       } else {
-        await axios.post('http://your-laravel-api.com/api/articles', formData, { headers });
+        await axios.post(`${import.meta.env.VITE_API_BASE_URL}/admin/articles`, formData, { headers })
+        showSuccess("Article submitted successfully!");
+        
       }
-
-      navigate('/dashboad/admin/articles');
+      navigate('/dashboard');
     } catch (error) {
-      setError(error.response?.data?.message || 'An error occurred while saving the article');
+      showError(error.response?.data?.message || 'An error occurred while saving the article');
       console.error(error);
     } finally {
       setLoading(false);
@@ -101,7 +117,7 @@ const ArticleForm = () => {
         </CardHeader>
         <CardContent>
           {loading && !isEditMode ? (
-            <div className="text-center p-4">Loading article data...</div>
+            <div className="text-center p-4">Loading...</div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && <div className="p-3 text-sm text-white bg-red-500 rounded">{error}</div>}
@@ -121,7 +137,7 @@ const ArticleForm = () => {
               <div className="space-y-2">
                 <label htmlFor="category" className="text-sm font-medium">Category</label>
                 <Select 
-                  value={formData.category} 
+                  value={formData.category_id?.toString()} 
                   onValueChange={handleSelectChange}
                   required
                 >
@@ -129,9 +145,9 @@ const ArticleForm = () => {
                     <SelectValue placeholder="Select a category" />
                   </SelectTrigger>
                   <SelectContent>
-                    {categories.map(category => (
-                      <SelectItem key={category} value={category}>
-                        {category}
+                    {categories?.map(category => (
+                      <SelectItem key={category.id} value={category.id.toString()}>
+                        {category.name}
                       </SelectItem>
                     ))}
                   </SelectContent>

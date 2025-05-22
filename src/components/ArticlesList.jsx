@@ -5,9 +5,12 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Search, Edit, Trash, Plus } from 'lucide-react'
+import { useAuth } from '@/context/AuthContext';
+import { showSuccess, showError } from "@/utils/toast"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 
-function ArticlesList({ readOnly = true }) {
+function ArticlesList({ readOnly = true }) {``
+  const {getToken}= useAuth();
   const [articles, setArticles] = useState([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
@@ -19,15 +22,17 @@ function ArticlesList({ readOnly = true }) {
   const fetchArticles = async () => {
     try {
       setLoading(true)
-      const token = localStorage.getItem("auth_token")
-      const response = await axios.get("http://your-laravel-api.com/api/articles", {
+      const token = getToken()
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/article/articles`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
-      setArticles(response.data)
+      showSuccess("Articles fetched successful!")
+      setArticles(response.data.data)
     } catch (error) {
       console.error("Error fetching articles:", error)
+      showError("Error fetching articles")
     } finally {
       setLoading(false)
     }
@@ -35,16 +40,18 @@ function ArticlesList({ readOnly = true }) {
 
   const handleDelete = async (id) => {
     try {
-      const token = localStorage.getItem("auth_token")
-      await axios.delete(`http://your-laravel-api.com/api/articles/${id}`, {
+      const token = getToken();
+      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/admin/articles/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
+      showSuccess("Article Deleted Successfully")
       // Refresh the articles list
       fetchArticles()
     } catch (error) {
       console.error("Error deleting article:", error)
+      showError("Error deleting article:", error)
     }
   }
 
@@ -81,7 +88,7 @@ function ArticlesList({ readOnly = true }) {
       {loading ? (
         <div className="text-center py-8">Loading articles...</div>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="flex flex-col gap-4">
           {filteredArticles.length === 0 ? (
             <div className="col-span-full text-center py-8">No articles found</div>
           ) : (
@@ -107,7 +114,7 @@ function ArticlesList({ readOnly = true }) {
                     
                     {!readOnly && (
                       <div className="flex gap-2">
-                        <Link to={`/articles/edit/${article.id}`}>
+                        <Link to={`/dashboard/articles/edit/${article.id}`}>
                           <Button variant="outline" size="sm">
                             <Edit className="h-4 w-4" />
                           </Button>

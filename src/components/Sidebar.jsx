@@ -11,11 +11,7 @@ function Sidebar({ open, isAdmin }) {
       icon: <Home className="h-5 w-5" />,
       path: "/dashboard",
     },
-    // {
-    //   name: "Articles",
-    //   icon: <FileText className="h-5 w-5" />,
-    //   path: "/articles",
-    // },
+
     {
       name: "Profile Settings",
       icon: <Settings className="h-5 w-5" />,
