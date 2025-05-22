@@ -54,7 +54,7 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-purple-100 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-blue-100 px-4">
       <Card className="w-full max-w-md p-8 rounded-xl shadow-lg bg-white">
         <div className="mb-8 text-center">
           <h1 className="text-2xl font-bold mb-1">Login</h1>
@@ -98,14 +98,14 @@ const LoginPage = () => {
                 Remember Me
               </Label>
             </div>
-            <a href="#" className="text-sm text-purple-600 hover:underline">
+            <a href="#" className="text-sm text-blue-600 hover:underline">
               Forgot Password?
             </a>
           </div>
 
           <Button
             type="submit"
-            className="w-full bg-purple-700 hover:bg-purple-800"
+            className="w-full bg-blue-700 hover:bg-blue-800"
             disabled={loading}
           >
             {loading ? (

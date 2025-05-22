@@ -192,11 +192,11 @@ const RegisterPage = () => {
                 />
                 <Label htmlFor="terms" className="text-sm cursor-pointer">
                   I agree to the{" "}
-                  <a href="#" className="text-purple-600 hover:underline">
+                  <a href="#" className="text-blue-600 hover:underline">
                     Terms of Service
                   </a>{" "}
                   and{" "}
-                  <a href="#" className="text-purple-600 hover:underline">
+                  <a href="#" className="text-blue-600 hover:underline">
                     Privacy Policy
                   </a>
                 </Label>
@@ -204,7 +204,7 @@ const RegisterPage = () => {
 
               <Button
                 type="submit"
-                className="w-full bg-purple-700 hover:bg-purple-800 mt-4"
+                className="w-full bg-blue-500 hover:bg-bg-blue-800 mt-4"
                 disabled={!agreeToTerms || isLoading}
               >
                 {isLoading ? (
@@ -217,7 +217,7 @@ const RegisterPage = () => {
               <div className="text-center mt-4">
                 <p className="text-sm text-gray-600">
                   Already have an account?{" "}
-                  <a href="/login" className="text-purple-600 hover:underline">
+                  <a href="/login" className="text-blue-600 hover:underline">
                     Login
                   </a>
                 </p>

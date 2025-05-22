@@ -6,8 +6,11 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, Save } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
+import { showError } from "@/utils/toast"
 
 const UserForm = () => {
+   const {getToken}= useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
   const isEditMode = !!id;
@@ -32,17 +35,17 @@ const UserForm = () => {
   const fetchUser = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('auth_token');
-      const response = await axios.get(`http://your-laravel-api.com/api/users/${id}`, {
+      const token = getToken();
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/admin/users/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
       // Remove password from form data when editing
-      const { password, ...userData } = response.data;
+      const { password, ...userData } = response.data.data;
       setFormData(userData);
     } catch (error) {
-      setError('Failed to fetch user details');
+      showError('Failed to fetch user details');
       console.error(error);
     } finally {
       setLoading(false);
@@ -64,7 +67,7 @@ const UserForm = () => {
     setError('');
 
     try {
-      const token = localStorage.getItem('auth_token');
+      const token = getToken();
       const headers = {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
@@ -77,14 +80,14 @@ const UserForm = () => {
       }
 
       if (isEditMode) {
-        await axios.put(`http://your-laravel-api.com/api/users/${id}`, dataToSend, { headers });
+        await axios.put(`${import.meta.env.VITE_API_BASE_URL}/admin/users/${id}`, dataToSend, { headers });
       } else {
-        await axios.post('http://your-laravel-api.com/api/users', dataToSend, { headers });
+        await axios.post(`${import.meta.env.VITE_API_BASE_URL}/admin/users`, dataToSend, { headers });
       }
 
-      navigate('/admin/users');
+      navigate('/dashboard/admin/users');
     } catch (error) {
-      setError(error.response?.data?.message || 'An error occurred while saving the user');
+      showError(error.response?.data?.message || 'An error occurred while saving the user');
       console.error(error);
     } finally {
       setLoading(false);

@@ -28,7 +28,6 @@ function ArticlesList({ readOnly = true }) {``
           Authorization: `Bearer ${token}`
         }
       })
-      showSuccess("Articles fetched successful!")
       setArticles(response.data.data)
     } catch (error) {
       console.error("Error fetching articles:", error)

@@ -8,8 +8,10 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Search, Plus, Edit, Trash, UserPlus } from 'lucide-react';
-
+import { useAuth } from '@/context/AuthContext';
+import {  showError, showSuccess } from "@/utils/toast"
 const UsersList = () => {
+   const {getToken}= useAuth();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -17,15 +19,15 @@ const UsersList = () => {
 
   const fetchUsers = async () => {
     try {
-      const token = localStorage.getItem('auth_token');
-      const response = await axios.get('http://your-laravel-api.com/api/users', {
+      const token = getToken();
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/admin/users`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
-      setUsers(response.data);
+      setUsers(response.data.data);
     } catch (error) {
-      setError('Failed to fetch users');
+      showError('Failed to fetch users');
       console.error(error);
     } finally {
       setLoading(false);
@@ -38,12 +40,13 @@ const UsersList = () => {
 
   const handleDelete = async (id) => {
     try {
-      const token = localStorage.getItem('auth_token');
-      await axios.delete(`http://your-laravel-api.com/api/users/${id}`, {
+      const token = getToken();
+      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/admin/users/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
+      showSuccess('User Deleted successfully')
       // Refresh the users list
       fetchUsers();
     } catch (error) {
@@ -91,7 +94,6 @@ const UsersList = () => {
                   <TableHead>Name</TableHead>
                   <TableHead>Email</TableHead>
                   <TableHead>Role</TableHead>
-                  <TableHead>Created At</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -110,10 +112,9 @@ const UsersList = () => {
                           {user.role}
                         </Badge>
                       </TableCell>
-                      <TableCell>{new Date(user.created_at).toLocaleDateString()}</TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2">
-                          <Link to={`/admin/users/edit/${user.id}`}>
+                          <Link to={`/dashboard/admin/users/edit/${user.id}`}>
                             <Button variant="outline" size="sm">
                               <Edit className="h-4 w-4" />
                             </Button>
