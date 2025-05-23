@@ -10,12 +10,13 @@ function Dashboard() {
   const {logout, getUser} = useAuth()
   const isAdmin = getUser()?.role === 'admin'
   const [sidebarOpen, setSidebarOpen] = useState(true)
+  const user = getUser();
 
   return (
     <div className="flex h-screen bg-background">
       <Sidebar open={sidebarOpen} isAdmin={isAdmin} />
       <div className="flex flex-col flex-1 overflow-hidden">
-        <Header onMenuClick={() => setSidebarOpen(!sidebarOpen)} onLogout={logout} />
+        <Header onMenuClick={() => setSidebarOpen(!sidebarOpen)} onLogout={logout}  user={user}/>
         <div className="flex flex-1 overflow-hidden">
           <main className="flex-1 overflow-y-auto p-4">
              <Outlet />

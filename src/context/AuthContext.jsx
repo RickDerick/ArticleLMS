@@ -2,15 +2,15 @@ import { createContext, useState, useEffect, useContext } from 'react';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(localStorage.getItem('user'))
-  const [token, setToken] = useState(localStorage.getItem('token'))
+  const [user, setUser] = useState(localStorage.getItem('articleLms_user'))
+  const [token, setToken] = useState(localStorage.getItem('articleLms_token'))
 
 const check = ()=>{
     return !!token;
   }
   const settingUser = async (user) => {
     localStorage.setItem("articleLms_user", JSON.stringify(user))
-    setUser('user')
+    setUser(user)
     
   };
 
@@ -25,6 +25,8 @@ const check = ()=>{
   const logout = async () => {
     localStorage.removeItem("articleLms_token");
     localStorage.removeItem("articleLms_user");
+    setUser(null); 
+    setToken(null);
      window.location.href = "/";
   };
 

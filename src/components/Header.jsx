@@ -1,9 +1,6 @@
-"use client"
-
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Menu, Search, Bell } from "lucide-react"
-import { useAuth } from "@/context/AuthContext"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,10 +12,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { Input } from "./ui/input"
 import { Button } from "./ui/button"
 
-function Header({ onMenuClick, onLogout }) {
-  const { getUser} = useAuth()
+function Header({ onMenuClick, onLogout, user}) {
   const [searchQuery, setSearchQuery] = useState("")
   const navigate = useNavigate()
+  console.log('check UserObject', user)
   const handleProfileClick = () => {
     navigate("/dashboard/profile")
   }
@@ -53,9 +50,8 @@ function Header({ onMenuClick, onLogout }) {
             <Button variant="ghost" className="relative h-8 w-8 rounded-full">
               <Avatar className="h-8 w-8">
                 <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
-                <AvatarFallback>{getUser() && getUser().name
-                  ? getUser().name.trim().charAt(0).toUpperCase()
-                  : 'U'}
+                <AvatarFallback>
+                 {user?.name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || "U"}
                 </AvatarFallback>
               </Avatar>
             </Button>

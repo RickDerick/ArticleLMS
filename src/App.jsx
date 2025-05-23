@@ -9,7 +9,7 @@ import ArticleForm from "./components/admin/ArticleForm";
 import UserForm from "./components/admin/UsersForm";
 import UsersList from "./components/admin/UsersList";
 import ProfileSettings from "./components/ProfileSetting";
-import NotFound from "./pages/NotFound"; // Add a NotFound component
+import NotFound from "./pages/NotFound"; 
 import { ToastContainer } from "react-toastify";
 import { useAuth } from "@/context/AuthContext";
 import "./App.css";
