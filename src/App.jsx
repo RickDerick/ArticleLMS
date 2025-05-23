@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
@@ -11,12 +10,17 @@ import UsersList from "./components/admin/UsersList";
 import ProfileSettings from "./components/ProfileSetting";
 import NotFound from "./pages/NotFound"; 
 import { ToastContainer } from "react-toastify";
-import { useAuth } from "@/context/AuthContext";
 import "./App.css";
-
+import { useAuth } from "./context/AuthContext";
+import { useEffect } from "react";
 function App() {
-  const { getUser } = useAuth();
+
+  const { getUser, settingUser } = useAuth();
   const isAdmin = getUser()?.role === "admin";
+
+ useEffect(() => {
+  settingUser(JSON.parse(localStorage.getItem('articleLms_user') || '{}'));
+ }, []);
 
   return (
     <>
@@ -29,7 +33,7 @@ function App() {
 
           {/* Protected Dashboard Layout with Nested Routes */}
           <Route path="/dashboard" element={<Dashboard />}>
-            <Route index element={<ArticlesList readOnly={!isAdmin} />} />
+            <Route index element={<ArticlesList readOnly={isAdmin} />} />
             <Route path="profile" element={<ProfileSettings />} />
 
             {isAdmin ? (

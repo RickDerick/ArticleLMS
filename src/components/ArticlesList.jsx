@@ -9,20 +9,21 @@ import { useAuth } from '@/context/AuthContext';
 import { showSuccess, showError } from "@/utils/toast"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 
-function ArticlesList({ readOnly = true }) {``
+function ArticlesList({ readOnly = false }) {
   const {getToken}= useAuth();
   const [articles, setArticles] = useState([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
-
   useEffect(() => {
-    fetchArticles()
+    fetchArticles();
   }, [])
 
   const fetchArticles = async () => {
     try {
+      console.log('fetch article', new Date())
       setLoading(true)
       const token = getToken()
+      console.log('logged token metod: ',getToken())
       const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/article/articles`, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -64,7 +65,7 @@ function ArticlesList({ readOnly = true }) {``
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Articles</h1>
         
-        {!readOnly && (
+        {readOnly && (
           <Link to="/dashboard/admin/articles/new">
             <Button>
               <Plus className="mr-2 h-4 w-4" /> Add New Article

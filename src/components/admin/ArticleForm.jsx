@@ -28,6 +28,7 @@ const ArticleForm = () => {
   const [categories, setCategories] = useState([ ]);
 
   useEffect(() => {
+    console.log('ArticlesForm', id)
     fetchCategories();
     if (isEditMode) {
       fetchArticle();

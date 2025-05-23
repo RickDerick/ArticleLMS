@@ -21,6 +21,7 @@ const LoginPage = () => {
   const location = useLocation()
   const navigate = useNavigate()
   useEffect(() => {
+     console.log('Login')
     const params = new URLSearchParams(location.search)
     const emailFromQuery = params.get('email')
     if(emailFromQuery){
@@ -41,7 +42,6 @@ const LoginPage = () => {
 
       const { token, user } = res.data.data
       if (token && user ) {
-       settingUser(user)
        login(token, user)
       } 
       showSuccess(res.data.data.message)

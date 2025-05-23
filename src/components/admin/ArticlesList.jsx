@@ -32,6 +32,7 @@ const ArticlesList = () => {
   };
 
   useEffect(() => {
+    console.log('articlesList')
     fetchArticles();
   }, []);
 

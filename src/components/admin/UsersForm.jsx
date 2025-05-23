@@ -27,6 +27,7 @@ const UserForm = () => {
   const roles = ['user', 'admin', 'editor'];
 
   useEffect(() => {
+    console.log('userFom')
     if (isEditMode) {
       fetchUser();
     }
