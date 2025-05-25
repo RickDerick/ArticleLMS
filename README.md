@@ -5,7 +5,7 @@
 Make sure you have Node.js (v18 or later)
 
 ## INSTALLATION GUIDE
-1.git clone https://github.com/RickDerick/ArticleLMS
+1.git clone https://github.com/RickDerick/ArticleLMS.git
 2.cd your-project
 3.create a .env file in the src folder and copy paste the content from env.example file
 4.npm install
